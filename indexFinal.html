@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFC North Teams</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: Light Grey;
+            color: #333;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        img {
+           width: 300px; /* Width is constrained to 300px */
+            height: auto; /* Height will automatically adjust to maintain aspect ratio */
+            max-width: 100%; /* Ensure the image never exceeds the width of its container */
+            display: block; /* Remove any spacing below the image */
+            margin-top: 20px; /* Space between text and image */
+        }
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>NFC North Teams</h1>
+    <ul id="team-list"></ul>  <!-- Corrected ID for the list -->
+
+    <script>
+        // Fetching NFC North teams from the API
+        fetch("http://157.230.214.215/api/devyn_NFL_Teams")
+            .then(response => response.json())
+            .then(data => {
+                const teamList = document.getElementById("team-list");  // Corrected ID for the list
+                data.forEach(team => {
+                    const listItem = document.createElement("li");
+
+                    // Create and append image
+                    const teamImage = document.createElement("img");
+                    teamImage.src = team.Image;
+                    teamImage.alt = `${team["Team Name"]} logo`;
+
+                    // Create and append link
+                    const link = document.createElement("a");
+                    link.href = `detailFinal.html?id=${team.ID}`;
+                    link.textContent = `${team["Team Name"]} (${team.Location})`;
+
+                    // Append the image and link to the list item
+                    listItem.appendChild(teamImage);
+                    listItem.appendChild(link);
+
+                    // Append list item to the team list
+                    teamList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Fetch error:', error));
+    </script>
+</body>
+</html>
+

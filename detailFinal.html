@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+        }
+        img {
+           width: 300px; /* Width is constrained to 300px */
+            height: auto; /* Height will automatically adjust to maintain aspect ratio */
+            max-width: 100%; /* Ensure the image never exceeds the width of its container */
+            display: block; /* Remove any spacing below the image */
+            margin-top: 20px; /* Space between text and image */
+        }
+    </style>
+</head>
+<body>
+    <h1>Team Details</h1>
+    <div id="team-details"></div>
+    <a href="indexFinal.html">Go back to index</a>
+
+    <script>
+        // Get the team ID from the URL
+        const params = new URLSearchParams(window.location.search);
+        const teamId = params.get("id");
+
+        // Fetch team details from the API using the ID
+        fetch(`http://157.230.214.215/api/devyn_NFL_Teams/${teamId}`)  <!-- Corrected URL for team details -->
+            .then(response => response.json())
+            .then(team => {
+                const teamDetails = document.getElementById("team-details");
+                if (team.error) {
+                    teamDetails.textContent = "Team not found.";
+                } else {
+                    // Dynamically create and insert team data into the page
+                    teamDetails.innerHTML = `
+                        <h2>${team["Team Name"]}</h2>
+                        <p><strong>Location:</strong> ${team.Location}</p>
+                        <p><strong>Titles:</strong> ${team.Titles}</p>
+						<img src="${team.Image}" alt="${team["Team Name"]} logo">
+                    `;
+                }
+            })
+          
+    </script>
+</body>
+</html>
